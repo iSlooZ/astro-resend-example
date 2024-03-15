@@ -1,4 +1,6 @@
+
 import SampleEmail from "../emails/SampleEmail";
+import { render } from "@react-email/render";
 
 
 
@@ -10,7 +12,14 @@ export const EmailForm = () => {
 		const formData = new FormData(e.currentTarget);
 		const { name, email } = Object.fromEntries(formData);
 
-		
+		const finalHtml = render(<SampleEmail userFirstname={ name as string }/>, {
+			pretty: true,
+		});
+
+		const finalText= render(<SampleEmail userFirstname={name as string} />, {
+			plainText:true,
+		});
+
 		try{
 			const res = await fetch("/api/sendEmail.json", {
 				method: "POST",
@@ -21,8 +30,8 @@ export const EmailForm = () => {
 					from: 'Acme <onboarding@resend.dev>',
 					to: email,
 					subject: `Sample${name}`,
-					html: "<p>Hi</p>",
-					text: 'Hi',
+					html: finalHtml,
+					text: finalText
 				}),
 			});
 			const data = await res.json();
