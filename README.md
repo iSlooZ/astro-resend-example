@@ -13,3 +13,7 @@ npx astro add node
       url: "url"
     })
   )
+
+
+
+npm i react-email @react-email/components @react-email/render
